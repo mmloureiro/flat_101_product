@@ -1,7 +1,3 @@
 controllers:
-    resource:
-#        path: ../src/Presentation/Controller/
-#        namespace: App\Presentation\Controller
-         path: ../src/Controller/
-         namespace: App\Controller
+    resource: '../src/Product/Infrastructure/Controller/'
     type: attribute

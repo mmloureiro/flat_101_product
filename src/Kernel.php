@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace Flat101;
 
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
