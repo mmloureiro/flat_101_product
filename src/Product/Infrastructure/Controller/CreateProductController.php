@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Flat101\Product\Infrastructure\Controller;
 
 use Exception;
 use Flat101\Product\Application\Create\CreateProductUseCase;
+use Flat101\Product\Infrastructure\Dto\ProductRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use OpenApi\Attributes as OA;
@@ -18,7 +22,7 @@ class CreateProductController extends AbstractController
     #[OA\Post(
         path: '/api/products',
         summary: 'Create a new product',
-        tags: ['Products']
+        tags: ['Product']
     )]
     #[OA\RequestBody(
         description: 'Product data',
@@ -57,6 +61,7 @@ class CreateProductController extends AbstractController
         )
     )]
     public function __invoke(
+        #[MapRequestPayload] ProductRequestDto $dto,
         Request $request,
         CreateProductUseCase $useCase,
         SerializerInterface $serializer

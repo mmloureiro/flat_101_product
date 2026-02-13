@@ -155,5 +155,26 @@ class ProductControllerTest extends WebTestCase
         $this->assertArrayHasKey('error', $data);
         $this->assertEquals('El nombre debe tener al menos 3 caracteres', $data['error']);
     }
+
+    public function testGetProductByIdReturns200(): void
+    {
+        // 1. Creamos un producto directamente con Doctrine
+        $product = new Product('Find Me', 50.0);
+        $this->entityManager->persist($product);
+        $this->entityManager->flush();
+
+        // 2. Intentamos recuperarlo vía API
+        $this->client->request('GET', '/api/products/' . $product->getId());
+
+        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
+        $data = json_decode($this->client->getResponse()->getContent(), true);
+        $this->assertEquals('Find Me', $data['name']);
+    }
+
+    public function testGetProductByIdReturns404IfNotFound(): void
+    {
+        $this->client->request('GET', '/api/products/9999');
+        $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
+    }
 }
 

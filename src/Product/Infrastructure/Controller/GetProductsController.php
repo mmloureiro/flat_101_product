@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Flat101\Product\Infrastructure\Controller;
 
 use Flat101\Product\Application\List\ListProductsUseCase;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 #[Route('/api/products', name: 'api_products_list', methods: ['GET'])]
@@ -17,7 +20,7 @@ class GetProductsController extends AbstractController
     #[OA\Get(
         path: '/api/products',
         summary: 'Get all products',
-        tags: ['Products']
+        tags: ['Product']
     )]
     #[OA\Response(
         response: 200,
@@ -43,7 +46,6 @@ class GetProductsController extends AbstractController
     {
         $products = $this->useCase->execute();
 
-        // Por ahora devolvemos un JSON simple para probar
-        return $this->json($products, 200, [], ['groups' => 'product:read']);
+        return $this->json($products, Response::HTTP_OK, [], ['groups' => 'product:read']);
     }
 }

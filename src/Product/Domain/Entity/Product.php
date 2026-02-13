@@ -54,7 +54,7 @@ class Product
     public function setName(string $name): self
     {
         if (strlen($name) < 3) {
-            throw new InvalidArgumentException('El nombre debe tener al menos 3 caracteres');
+            throw new InvalidArgumentException('Name must be at least 3 characters long');
         }
 
         $this->name = $name;
@@ -69,7 +69,7 @@ class Product
     public function setPrice(float $price): self
     {
         if ($price <= 0) {
-            throw new InvalidArgumentException('El precio debe ser mayor a 0');
+            throw new InvalidArgumentException('Price must be greater than 0');
         }
 
         $this->price = $price;
