@@ -187,5 +187,23 @@ class ProductControllerTest extends WebTestCase
         $this->client->request('GET', '/api/products/9999');
         $this->assertResponseStatusCodeSame(Response::HTTP_NOT_FOUND);
     }
+
+    public function testDeleteProductSuccessfully(): void
+    {
+        // Crear producto
+        $this->client->request('POST', '/api/products', [], [],
+            ['CONTENT_TYPE' => 'application/json'],
+            json_encode(['name' => 'Elimíname', 'price' => 5.0])
+        );
+        $id = json_decode($this->client->getResponse()->getContent(), true)['id'];
+
+        // Borrar producto
+        $this->client->request('DELETE', "/api/products/$id");
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $this->client->getResponse()->getStatusCode());
+
+        // Verificar que ya no existe
+        $this->client->request('GET', "/api/products/$id");
+        $this->assertEquals(Response::HTTP_NOT_FOUND, $this->client->getResponse()->getStatusCode());
+    }
 }
 
