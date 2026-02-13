@@ -9,7 +9,6 @@ use Flat101\Product\Application\Create\CreateProductUseCase;
 use Flat101\Product\Infrastructure\Dto\ProductRequestDto;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
@@ -62,18 +61,11 @@ class CreateProductController extends AbstractController
     )]
     public function __invoke(
         #[MapRequestPayload] ProductRequestDto $dto,
-        Request $request,
         CreateProductUseCase $useCase,
         SerializerInterface $serializer
     ): JsonResponse {
-        $data = json_decode($request->getContent(), true);
-
-        if (!isset($data['name']) || !isset($data['price'])) {
-            return new JsonResponse(['error' => 'Missing name or price'], Response::HTTP_BAD_REQUEST);
-        }
-
         try {
-            $product = $useCase->execute($data ['name'], (float)$data['price']);
+            $product = $useCase->execute($dto->name, $dto->price);
 
             return new JsonResponse(
                 $serializer->serialize($product, 'json', ['groups' => 'product:read']),

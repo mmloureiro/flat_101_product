@@ -6,12 +6,12 @@ namespace Flat101\Product\Infrastructure\Controller;
 
 use Flat101\Product\Application\Update\UpdateProductUseCase;
 use Flat101\Product\Infrastructure\Dto\ProductRequestDto;
+use InvalidArgumentException;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -86,6 +86,11 @@ class UpdateProductController extends AbstractController
             return new JsonResponse(
                 ['error' => $e->getMessage(), 'code' => Response::HTTP_NOT_FOUND],
                 Response::HTTP_NOT_FOUND
+            );
+        } catch (InvalidArgumentException $e) {
+            return new JsonResponse(
+                ['error' => $e->getMessage()],
+                Response::HTTP_BAD_REQUEST
             );
         }
     }

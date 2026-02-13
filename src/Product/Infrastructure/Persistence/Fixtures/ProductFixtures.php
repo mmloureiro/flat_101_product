@@ -24,9 +24,7 @@ class ProductFixtures extends Fixture
         ];
 
         foreach ($products as $productData) {
-            $product = new Product();
-            $product->setName($productData['name']);
-            $product->setPrice($productData['price']);
+            $product = new Product($productData['name'], $productData['price']);
 
             $manager->persist($product);
         }

@@ -17,6 +17,7 @@ class GetProductsController extends AbstractController
     public function __construct(
         private readonly ListProductsUseCase $useCase
     ) {}
+
     #[OA\Get(
         path: '/api/products',
         summary: 'Get all products',
@@ -42,7 +43,7 @@ class GetProductsController extends AbstractController
             )
         )
     )]
-    public function __invoke(ListProductsUseCase $useCase): JsonResponse
+    public function __invoke(): JsonResponse
     {
         $products = $this->useCase->execute();
 
